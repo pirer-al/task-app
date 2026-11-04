@@ -48,6 +48,10 @@ public class Task {
     private Instant updated;
 
 
+    public Task() {
+    }
+
+
     public Task(UUID id, String title, String description, LocalDate dueDate, TaskStatus status, TaskPriority priority,
             Instant created, Instant updated) {
         this.id = id;

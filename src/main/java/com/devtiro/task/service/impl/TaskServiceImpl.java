@@ -26,10 +26,17 @@ public class TaskServiceImpl implements TaskService{
         // TODO Auto-generated method stub
         Instant now = Instant.now();
     
-        Task task = new Task(null, request.title(), request.description(), request.dueDate(), TaskStatus.OPEN, request.priority(), now, now);
+        Task task = new Task(
+            null, 
+            request.title(), 
+            request.description(), 
+            request.dueDate(), 
+            TaskStatus.OPEN, 
+            request.priority(), 
+            now, 
+            now);
 
-        return task;
-    
+        return taskRepository.save(task);
     }
 
     @Override
