@@ -1,7 +1,10 @@
 package com.devtiro.task.service.impl;
 
 import java.time.Instant;
+import java.util.List;
 
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import com.devtiro.task.domain.CreateTaskRequest;
@@ -27,6 +30,11 @@ public class TaskServiceImpl implements TaskService{
 
         return task;
     
+    }
+
+    @Override
+    public List<Task> listTasks() {
+        return taskRepository.findAll(Sort.by(Direction.ASC, "created"));
     }
     
 }
