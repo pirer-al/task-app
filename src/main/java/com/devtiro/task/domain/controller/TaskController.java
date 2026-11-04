@@ -1,19 +1,25 @@
 package com.devtiro.task.domain.controller;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.apache.catalina.connector.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.devtiro.task.domain.CreateTaskRequest;
+import com.devtiro.task.domain.UpdateTaskRequest;
 import com.devtiro.task.domain.dto.CreateTaskRequestDto;
 import com.devtiro.task.domain.dto.TaskDto;
+import com.devtiro.task.domain.dto.UpdateTaskRequestDto;
 import com.devtiro.task.domain.entity.Task;
 import com.devtiro.task.mapper.TaskMapper;
 import com.devtiro.task.service.TaskService;
@@ -48,5 +54,19 @@ public class TaskController {
         List<Task> tasks = taskService.listTasks();
         List<TaskDto> taskDtos = tasks.stream().map(taskMapper::toDto).toList();
         return ResponseEntity.ok(taskDtos); 
+    }
+
+    @PutMapping(path = "/{taskId}")
+    public ResponseEntity<TaskDto> updateTask(
+        @PathVariable  UUID taskId,
+        @Valid @RequestBody UpdateTaskRequestDto updateTaskRequestDto
+    ) {
+        UpdateTaskRequest updateTaskRequest = taskMapper.fromDto(updateTaskRequestDto);
+
+        Task task = taskService.updateTask(taskId, updateTaskRequest);
+
+        TaskDto taskDto = taskMapper.toDto(task);
+
+        return ResponseEntity.ok(taskDto);
     }
 }
